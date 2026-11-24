@@ -76,3 +76,4 @@ try {
 try {
 /* (p287) polyfill WebView 83 — xem tools/patches/p287_poly83_028.py */ (function () { [window.Element, window.Document, window.DocumentFragment].forEach(function (C) { var p = C && C.prototype; if (!p || p.replaceChildren) return; p.replaceChildren = function () { while (this.lastChild) this.removeChild(this.lastChild); this.append.apply(this, arguments); }; }); })();
 } catch (e) { console.error("inject", e && e.stack); }
+try { document.addEventListener('DOMContentLoaded', function () { var s = document.createElement('style'); s.textContent = '@supports not (aspect-ratio: 1) { #home016 .h-tools .h-tl .hic16 { height: 36px !important; } }'; document.head.appendChild(s); }); } catch (e) {}
