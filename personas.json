@@ -178,5 +178,50 @@
     "locale": "zh-CN",
     "geo": [31.2304, 121.4737],
     "device": {"simulator": "iPhone 16e", "ios": 18, "text_size": "extra-large", "theme": "light"}
+  },
+  {
+    "id": "minh",
+    "platform": "android",
+    "profile": "Mother, 34, reads Vietnamese, plays with her 7-year-old on a mid-range phone.",
+    "goal": "Get through the first levels and the pet's yard without help.",
+    "locale": "vi-VN",
+    "geo": [21.0285, 105.8542],
+    "device": {"name": "Pixel 6, Android 13", "profile": "pixel_6", "android_api": 33, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "jiwoo",
+    "platform": "android",
+    "profile": "Student, 16, reads Korean, plays cozy games daily, checks every menu.",
+    "goal": "Try every area of the game and judge whether it feels finished.",
+    "locale": "ko-KR",
+    "geo": [37.5665, 126.978],
+    "device": {"name": "Pixel 7, Android 14", "profile": "pixel_7", "android_api": 34, "font_scale": 1.0, "theme": "dark"}
+  },
+  {
+    "id": "mei",
+    "platform": "android",
+    "profile": "Accountant, 31, reads Simplified Chinese, short sessions on the subway.",
+    "goal": "Finish a few levels and decorate the yard in short bursts.",
+    "locale": "zh-CN",
+    "geo": [31.2304, 121.4737],
+    "device": {"name": "Pixel 5, Android 12", "profile": "pixel_5", "android_api": 31, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "lukas",
+    "platform": "android",
+    "profile": "Father, 41, reads German, careful about in-app purchases for his kids.",
+    "goal": "Understand what costs real money and what is free before letting a child play.",
+    "locale": "de-DE",
+    "geo": [52.52, 13.405],
+    "device": {"name": "Pixel 8, Android 15", "profile": "pixel_8", "android_api": 35, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "chloe",
+    "platform": "android",
+    "profile": "Designer, 26, reads French, notices misaligned and cut-off text.",
+    "goal": "Go through every panel and shop and spot layout or wording problems.",
+    "locale": "fr-FR",
+    "geo": [48.8566, 2.3522],
+    "device": {"name": "Small phone, Android 11", "profile": "Nexus 5", "android_api": 30, "font_scale": 1.0, "theme": "light"}
   }
 ]
