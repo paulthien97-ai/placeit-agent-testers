@@ -1,0 +1,45 @@
+name: api30-console
+# Mở APK debug trên máy ảo Android (mặc định API 30), ghi lỗi JS của WebView qua DevTools + logcat + ảnh chụp. Không dùng AI.
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag: { description: "Release chứa APK debug", default: "app-1.0.5-debug" }
+      apk_name: { description: "Tên file APK trong release", default: "placeit-1.0.5-debug.apk" }
+      api: { description: "API level", default: "30" }
+permissions: { contents: read }
+jobs:
+  console:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download APK
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh release download "${{ inputs.release_tag }}" -p "${{ inputs.apk_name }}" -O app.apk -R "${{ github.repository }}"
+      - name: KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - run: pip install websocket-client
+      - name: Emulator + console
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ inputs.api }}
+          target: google_apis
+          arch: x86_64
+          profile: pixel_4
+          ram-size: 4096M
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          script: |
+            adb install -r app.apk
+            adb shell dumpsys package com.google.android.webview | grep -m1 versionName || true
+            adb logcat -c
+            python3 scripts/android/api30_console.py | tee out-console.txt || true
+            mkdir -p out && mv out-console.txt out/ || true
+            adb logcat -d > out/logcat-all.txt || true
+            grep -iE "chromium|console" out/logcat-all.txt > out/logcat.txt || true
+            adb shell dumpsys package com.google.android.webview | grep versionName > out/webview.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: api30-console, path: out/ }
