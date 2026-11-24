@@ -1,4 +1,41 @@
 try {
+/* (p292) flex gap cho WebView cũ — xem tools/patches/p292_flexgap028.py */ (function () {
+  if (!document.documentElement) { document.addEventListener('DOMContentLoaded', arguments.callee); return; }
+  var R = document.documentElement, t = document.createElement('div');
+  t.style.cssText = 'display:flex;flex-direction:column;row-gap:1px;position:absolute;visibility:hidden';
+  t.appendChild(document.createElement('div')); t.appendChild(document.createElement('div')); R.appendChild(t);
+  var ok = t.scrollHeight === 1; R.removeChild(t);
+  if (ok && !window.__force292) return;
+  window.__flexgap292 = 1;
+  var P = ['marginLeft', 'marginTop', 'marginRight', 'marginBottom'], touched = [];
+  function base(k) { if (!k._g292) { var c = getComputedStyle(k); k._g292 = P.map(function (p) { return [k.style[p], parseFloat(c[p]) || 0]; }); touched.push(k); } return k._g292; }
+  function put(k, i, add) { var b = base(k)[i], v = add ? (b[1] + add) + 'px' : b[0]; if (k.style[P[i]] !== v) k.style[P[i]] = v; }
+  function pass() {
+    pend = 0;
+    for (var z = 0; z < touched.length; z++) { var k0 = touched[z], b0 = k0._g292; for (var q = 0; q < 4; q++) if (k0.style[P[q]] !== b0[q][0]) k0.style[P[q]] = b0[q][0]; }
+    var all = document.body ? document.body.getElementsByTagName('*') : [];
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i], cs = getComputedStyle(el), d = cs.display;
+      if (d !== 'flex' && d !== 'inline-flex') continue;
+      var cg = parseFloat(cs.columnGap) || 0, rg = parseFloat(cs.rowGap) || 0; if (!cg && !rg) continue;
+      var dir = cs.flexDirection, row = dir.indexOf('row') === 0, rev = dir.indexOf('reverse') > 0, wrap = cs.flexWrap !== 'nowrap';
+      var mi = row ? (rev ? 2 : 0) : (rev ? 3 : 1), gm = row ? cg : rg, kids = [];
+      for (var c = el.firstElementChild; c; c = c.nextElementSibling) { var kc = getComputedStyle(c); if (kc.display !== 'none' && kc.position !== 'absolute' && kc.position !== 'fixed') kids.push(c); }
+      for (var j = 1; j < kids.length; j++) if (gm) put(kids[j], mi, gm);
+      if (wrap && kids.length > 1) {   // đầu mỗi dòng mới: bỏ khoảng ngang, thêm khoảng dọc
+        var top0 = row ? kids[0].offsetTop : kids[0].offsetLeft;
+        for (var w = 1; w < kids.length; w++) { var o = row ? kids[w].offsetTop : kids[w].offsetLeft;
+          if (o > top0 + 1) { if (row && kids[w].offsetLeft <= kids[0].offsetLeft + 1) put(kids[w], mi, 0); var cross = row ? rg : cg; if (cross) put(kids[w], row ? 1 : 0, cross); } }
+      }
+    }
+  }
+  var pend = 0;
+  function later() { if (!pend) pend = setTimeout(pass, 120); }
+  new MutationObserver(later).observe(R, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden'] });
+  window.addEventListener('resize', later); window.addEventListener('load', later); document.addEventListener('DOMContentLoaded', later);
+})();
+} catch (e) { console.error("inject", e && e.stack); }
+try {
 /* (p288) mask không tiền tố → -webkit-mask cho WebView cũ — xem tools/patches/p288_mask83_028.py */ (function () {
   var C = window.CSS; if (!C || !C.supports) return;
   if (C.supports('mask-image', 'none') && !window.__force288) return;
