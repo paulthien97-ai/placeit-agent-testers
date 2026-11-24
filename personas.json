@@ -223,5 +223,59 @@
     "locale": "fr-FR",
     "geo": [48.8566, 2.3522],
     "device": {"name": "Small phone, Android 11", "profile": "Nexus 5", "android_api": 30, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "an11",
+    "platform": "android",
+    "profile": "Grandfather, 66, reads Vietnamese, plays slowly with his granddaughter on an older phone.",
+    "goal": "Play several levels and visit the yard and farm without getting stuck.",
+    "locale": "vi-VN",
+    "geo": [10.8231, 106.6297],
+    "device": {"name": "Small phone, Android 11", "profile": "Nexus 5X", "android_api": 30, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "soyeon11",
+    "platform": "android",
+    "profile": "Nurse, 29, reads Korean, plays between shifts, likes collecting and decorating.",
+    "goal": "Earn coins, decorate the yard and try the sky garden.",
+    "locale": "ko-KR",
+    "geo": [35.1796, 129.0756],
+    "device": {"name": "Pixel 4, Android 11", "profile": "pixel_4", "android_api": 30, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "wei11",
+    "platform": "android",
+    "profile": "Engineer, 38, reads Simplified Chinese, tests every button and mode.",
+    "goal": "Try every mode on the map and every panel of the farm.",
+    "locale": "zh-CN",
+    "geo": [39.9042, 116.4074],
+    "device": {"name": "Pixel 3a, Android 11", "profile": "pixel_3a", "android_api": 30, "font_scale": 1.0, "theme": "dark"}
+  },
+  {
+    "id": "hanna11",
+    "platform": "android",
+    "profile": "Teacher, 52, reads German, careful reader, checks every text for mistakes.",
+    "goal": "Read every panel and report wrong or untranslated text.",
+    "locale": "de-DE",
+    "geo": [48.1351, 11.582],
+    "device": {"name": "Pixel 5, Android 11", "profile": "pixel_5", "android_api": 30, "font_scale": 1.0, "theme": "light"}
+  },
+  {
+    "id": "bruno11",
+    "platform": "android",
+    "profile": "Student, 17, reads Portuguese, impatient, taps fast and skips tutorials.",
+    "goal": "Get as far as possible in 15 minutes, skipping every tip.",
+    "locale": "pt-BR",
+    "geo": [-22.9068, -43.1729],
+    "device": {"name": "Pixel 4, Android 11", "profile": "pixel_4", "android_api": 30, "font_scale": 1.0, "theme": "dark"}
+  },
+  {
+    "id": "carmen11",
+    "platform": "android",
+    "profile": "Mother, 35, reads Spanish, plays with her son on the family tablet.",
+    "goal": "Play levels together and decorate the yard on a big screen.",
+    "locale": "es-ES",
+    "geo": [41.3874, 2.1686],
+    "device": {"name": "Pixel C tablet, Android 11", "profile": "pixel_c", "android_api": 30, "font_scale": 1.0, "theme": "light"}
   }
 ]
