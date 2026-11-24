@@ -10,6 +10,7 @@ def adb(*a): return subprocess.run(["adb", *a], capture_output=True, text=True).
 def shot(name): subprocess.run(f"adb exec-out screencap -p > {OUT}/{name}.png", shell=True)
 
 adb("shell", "am", "start", "-n", f"{APP}/.MainActivity") if "MainActivity" in adb("shell", "cmd", "package", "resolve-activity", "--brief", APP) else adb("shell", "monkey", "-p", APP, "1")
+adb("shell", "svc", "power", "stayon", "true"); adb("shell", "input", "keyevent", "KEYCODE_WAKEUP"); adb("shell", "wm", "dismiss-keyguard")
 sock = None
 for _ in range(60):
     time.sleep(2)
@@ -44,6 +45,15 @@ EV = ("JSON.stringify({ua: navigator.userAgent, old284: window.__old284 || null,
       " u: getComputedStyle(document.getElementById('app')).getPropertyValue('--u')})")
 send("Runtime.evaluate", {"expression": EV, "returnByValue": True}); pump(1)
 send("Runtime.evaluate", {"expression": "document.getElementById('spPlay').click(), 'clicked'", "returnByValue": True}); pump(8); shot("02-level")
+import base64
+def cshot(name):
+    i = send("Page.captureScreenshot", {"format": "png"}); end = time.time() + 10
+    while time.time() < end:
+        try: m = json.loads(ws.recv())
+        except Exception: continue
+        if m.get("id") == i: open(f"{OUT}/{name}.png", "wb").write(base64.b64decode(m["result"]["data"])); return
+cshot("03-level-cdp")
+send("Runtime.evaluate", {"expression": "JSON.stringify({boot: !!document.getElementById('boot'), vis: document.visibilityState, bootT: window.__bootT || null, scr: document.getElementById('app').className})", "returnByValue": True}); pump(1)
 send("Runtime.evaluate", {"expression": "JSON.stringify([...document.querySelectorAll('#board,#tray,.vali,#game, #app > *')].slice(0,40).map(e=>[e.id||e.className, Math.round(e.getBoundingClientRect().width), Math.round(e.getBoundingClientRect().height), getComputedStyle(e).display]))", "returnByValue": True}); pump(2)
 json.dump(log, open(f"{OUT}/console.json", "w"), ensure_ascii=False, indent=1)
 for m in log:
