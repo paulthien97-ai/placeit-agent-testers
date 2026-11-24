@@ -1,3 +1,4 @@
+try {
 /* (p288) mask không tiền tố → -webkit-mask cho WebView cũ — xem tools/patches/p288_mask83_028.py */ (function () {
   var C = window.CSS; if (!C || !C.supports) return;
   if (C.supports('mask-image', 'none') && !window.__force288) return;
@@ -24,7 +25,7 @@
   if (ct && ct.set) Object.defineProperty(D, 'cssText', { configurable: true, enumerable: ct.enumerable, get: ct.get,
     set: function (v) { ct.set.call(this, String(v).indexOf('mask') >= 0 ? blk(String(v)) : v); } });
   ['', 'Image', 'Size', 'Position', 'Repeat', 'Origin', 'Clip', 'Mode'].forEach(function (k) {
-    var n = 'mask' + k, w = 'webkitMask' + k; if (!D || n in document.documentElement.style) return;
+    var n = 'mask' + k, w = 'webkitMask' + k; if (!D || n in document.createElement('div').style) return;
     Object.defineProperty(D, n, { configurable: true, get: function () { return this[w]; }, set: function (v) { this[w] = v; } }); });
   function walk(n) { if (n.nodeType !== 1) return; if (n.tagName === 'STYLE') fixStyle(n); else { fixAttr(n);
       var q = n.querySelectorAll('style,[style*="mask"]'); for (var i = 0; i < q.length; i++) q[i].tagName === 'STYLE' ? fixStyle(q[i]) : fixAttr(q[i]); } }
@@ -32,6 +33,9 @@
       if (m.type === 'attributes') fixAttr(m.target);
       else if (m.type === 'characterData') { var p = m.target.parentNode; if (p && p.tagName === 'STYLE') fixStyle(p); }
       else { if (m.target.tagName === 'STYLE') fixStyle(m.target); for (var j = 0; j < m.addedNodes.length; j++) walk(m.addedNodes[j]); } } })
-    .observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'], characterData: true });
+    .observe(document, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'], characterData: true });
 })();
+} catch (e) { console.error("inject", e && e.stack); }
+try {
 /* (p287) polyfill WebView 83 — xem tools/patches/p287_poly83_028.py */ (function () { [window.Element, window.Document, window.DocumentFragment].forEach(function (C) { var p = C && C.prototype; if (!p || p.replaceChildren) return; p.replaceChildren = function () { while (this.lastChild) this.removeChild(this.lastChild); this.append.apply(this, arguments); }; }); })();
+} catch (e) { console.error("inject", e && e.stack); }
