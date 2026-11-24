@@ -15,14 +15,15 @@ sock = None
 for _ in range(60):
     time.sleep(2)
     s = adb("shell", "cat", "/proc/net/unix")
-    names = sorted({l.split("@")[-1].strip() for l in s.splitlines() if "devtools_remote" in l})
+    pid = adb("shell", "pidof", APP).strip()
+    names = sorted({l.split("@")[-1].strip() for l in s.splitlines() if "devtools_remote" in l and (not pid or l.strip().endswith("_" + pid))})
     if names: sock = names[-1]; break
 print("socket", sock)
 if not sock: sys.exit("no devtools socket")
 adb("forward", "tcp:9222", f"localabstract:{sock}")
 pages = []
 for _ in range(30):
-    try: pages = [p for p in json.load(urllib.request.urlopen("http://127.0.0.1:9222/json")) if p.get("type") == "page"]
+    try: pages = [p for p in json.load(urllib.request.urlopen("http://127.0.0.1:9222/json")) if p.get("type") == "page" and "index.html" in p.get("url", "")]
     except Exception: pages = []
     if pages: break
     time.sleep(1)
