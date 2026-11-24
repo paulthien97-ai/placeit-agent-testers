@@ -6,6 +6,7 @@ on:
       release_tag: { description: "Release chứa APK debug", default: "app-1.0.5-debug" }
       apk_name: { description: "Tên file APK trong release", default: "placeit-1.0.5-debug.apk" }
       api: { description: "API level", default: "30" }
+      inject: { description: "JS chèn trước trang (thử bản vá không cần APK mới), để trống = không", default: "" }
 permissions: { contents: read }
 jobs:
   console:
@@ -35,7 +36,7 @@ jobs:
             adb install -r app.apk
             adb shell dumpsys package com.google.android.webview | grep -m1 versionName || true
             adb logcat -c
-            python3 scripts/android/api30_console.py | tee out-console.txt || true
+            INJECT="${{ inputs.inject }}" python3 scripts/android/api30_console.py | tee out-console.txt || true
             mkdir -p out && mv out-console.txt out/ || true
             adb logcat -d > out/logcat-all.txt || true
             grep -iE "chromium|console" out/logcat-all.txt > out/logcat.txt || true

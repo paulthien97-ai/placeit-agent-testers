@@ -37,6 +37,8 @@ def pump(sec):
         if m.get("method") in ("Runtime.exceptionThrown", "Runtime.consoleAPICalled", "Log.entryAdded"): log.append(m)
         elif "id" in m and m.get("result", {}).get("result", {}).get("value") is not None: log.append({"eval": m["result"]["result"]["value"]})
 for m in ("Runtime.enable", "Log.enable", "Page.enable"): send(m)
+INJ = os.environ.get("INJECT", "")
+if INJ and os.path.exists(INJ): send("Page.addScriptToEvaluateOnNewDocument", {"source": open(INJ, encoding="utf-8").read()}); print("inject", INJ)
 pump(1); send("Page.reload", {"ignoreCache": True}); pump(8); shot("01-title")
 EV = ("JSON.stringify({ua: navigator.userAgent, old284: window.__old284 || null, app: (function(){var r=document.getElementById('app').getBoundingClientRect();return [r.width,r.height]})(),"
       " u: getComputedStyle(document.getElementById('app')).getPropertyValue('--u')})")

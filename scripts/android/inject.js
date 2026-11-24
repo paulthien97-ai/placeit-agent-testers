@@ -1,0 +1,1 @@
+/* (p287) polyfill WebView 83 — xem tools/patches/p287_poly83_028.py */ (function () { [window.Element, window.Document, window.DocumentFragment].forEach(function (C) { var p = C && C.prototype; if (!p || p.replaceChildren) return; p.replaceChildren = function () { while (this.lastChild) this.removeChild(this.lastChild); this.append.apply(this, arguments); }; }); })();
